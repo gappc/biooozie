@@ -1,0 +1,14 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="biohadoop-wf">
+    <start to="biohadoop-node"/>
+    <action name="biohadoop-node">
+        <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
+            <config>/tmp/biohadoop-ga.json</config>
+        </biohadoop>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    <kill name="fail">
+        <message>Biohadoop failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
