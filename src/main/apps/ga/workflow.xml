@@ -2,7 +2,7 @@
     <start to="biohadoop-node"/>
     <action name="biohadoop-node">
         <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
-            <config>/tmp/biohadoop-ga.json</config>
+            <config-file>/biohadoop/conf/biohadoop-ga.json</config-file>
         </biohadoop>
         <ok to="end"/>
         <error to="fail"/>

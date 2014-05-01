@@ -41,7 +41,7 @@ public class BiohadoopAction extends ActionExecutor {
 	private static final String FAILED = "FAIL";
 	private static final String KILLED = "KILLED";
 
-	private static final String CONFIG = "config";
+	private static final String CONFIG_FILE = "config-file";
 	protected XLog log = XLog.getLog(getClass());
 
 	public BiohadoopAction() {
@@ -59,51 +59,37 @@ public class BiohadoopAction extends ActionExecutor {
 		log.error("***** start *****");
 		// Get parameters from Node configuration
 		try {
-			log.error("***** 1 *****");
 			Element actionXml = XmlUtils.parseXml(action.getConf());
-			log.error("***** 2 *****");
 			Namespace ns = Namespace
 					.getNamespace("uri:custom:biohadoop-action:0.1");
-
-			log.error("***** 4 *****");
-			String config = actionXml.getChildTextTrim(CONFIG, ns);
+			String configFile = actionXml.getChildTextTrim(CONFIG_FILE, ns);
 
 			// Check if all needed parameters are there
-			log.error("***** 5 *****");
-			if (config == null) {
+			if (configFile == null) {
 				throw new ActionExecutorException(ErrorType.FAILED,
 						ErrorCode.E0000.toString(),
 						"No configuration file specified, please specify one inside the tag <config>");
 			}
-
-			YarnConfiguration conf = new YarnConfiguration();
-			Map<String, String> vals = conf.getValByRegex(".*");
-			for (String s : vals.keySet()) {
-				log.debug("***** YarnConfiguration: " + s + "\t" + vals.get(s));
-			}
 			
 			// Execute action synchronously
-			log.error("***** 6 *****");
+			YarnConfiguration conf = new YarnConfiguration();
 			conf.set("fs.default.name", "hdfs://master:54310");
 			conf.set("fs.defaultFS", "hdfs://master:54310");
 			Client client = new Client();
-			client.run(conf, new String[] {
-					"at.ac.uibk.dps.biohadoop.ga.worker.SocketGaWorker", "2" });
-			
+			client.run(conf, new String[]{configFile});
+					
 //			run(conf, new String[] {"/tmp/biohadoop-0.0.1-SNAPSHOT.jar", "at.ac.uibk.dps.biohadoop.hadoop.Client",
 //					"at.ac.uibk.dps.biohadoop.ga.worker.SocketGaWorker", "2" });
 
-			log.error("***** 7 *****");
 			context.setExecutionData(SUCCEEDED, null);
-			log.error("***** 8 *****");
 		} catch (Exception e) {
 			context.setExecutionData(FAILED, null);
-			log.error("***** FUCK *****", e);
+			log.error("Error while running Oozie job", e);
 			throw new ActionExecutorException(ErrorType.FAILED,
 					ErrorCode.E0000.toString(), e.getMessage());
 		} catch (Throwable e) {
 			context.setExecutionData(FAILED, null);
-			log.error("***** FUCK *****", e);
+			log.error("Error while running Oozie job", e);
 			throw new ActionExecutorException(ErrorType.FAILED,
 					ErrorCode.E0000.toString(), e.getMessage());
 		}
@@ -121,8 +107,6 @@ public class BiohadoopAction extends ActionExecutor {
 	@Override
 	public void check(Context context, WorkflowAction action)
 			throws ActionExecutorException {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -134,7 +118,6 @@ public class BiohadoopAction extends ActionExecutor {
 
 	@Override
 	public boolean isCompleted(String externalStatus) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
