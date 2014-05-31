@@ -3,7 +3,7 @@
     <!-- SINGLE ACTION -->
     <action name="biohadoop-node">
         <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
-            <config-file>/biohadoop/conf/biohadoop-ga.json</config-file>
+            <config-file>/biohadoop/conf/biohadoop-moead.json</config-file>
         </biohadoop>
         <ok to="end"/>
         <error to="fail"/>
