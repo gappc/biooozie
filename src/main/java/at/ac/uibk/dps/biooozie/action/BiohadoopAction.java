@@ -30,8 +30,8 @@ import org.apache.oozie.util.XmlUtils;
 import org.jdom.Element;
 import org.jdom.Namespace;
 
-import at.ac.uibk.dps.biohadoop.hadoop.Client;
-import at.ac.uibk.dps.biohadoop.torename.Hostname;
+import at.ac.uibk.dps.biohadoop.hadoop.BiohadoopClient;
+import at.ac.uibk.dps.biohadoop.torename.HostInfo;
 import at.ac.uibk.dps.biohadoop.torename.LocalResourceBuilder;
 
 public class BiohadoopAction extends ActionExecutor {
@@ -75,7 +75,7 @@ public class BiohadoopAction extends ActionExecutor {
 			YarnConfiguration conf = new YarnConfiguration();
 			conf.set("fs.default.name", "hdfs://master:54310");
 			conf.set("fs.defaultFS", "hdfs://master:54310");
-			Client client = new Client();
+			BiohadoopClient client = new BiohadoopClient();
 			client.run(conf, new String[]{configFile});
 					
 //			run(conf, new String[] {"/tmp/biohadoop-0.0.1-SNAPSHOT.jar", "at.ac.uibk.dps.biohadoop.hadoop.Client",
@@ -149,8 +149,8 @@ public class BiohadoopAction extends ActionExecutor {
 				+ "/stderr"));
 
 		// Set libs
-		String libPath = "hdfs://" + Hostname.getHostname() + ":54310/biohadoop/lib/";
-		String dataPath = "hdfs://" + Hostname.getHostname() + ":54310/biohadoop/data/";
+		String libPath = "hdfs://" + HostInfo.getHostname() + ":54310/biohadoop/lib/";
+		String dataPath = "hdfs://" + HostInfo.getHostname() + ":54310/biohadoop/data/";
 //		String libPath = "file:///tmp/lib/";
 //		String dataPath = "file:///tmp/data/";
 		Map<String, LocalResource> jars = LocalResourceBuilder
