@@ -1,0 +1,53 @@
+<workflow-app xmlns="uri:oozie:workflow:0.2" name="biohadoop-wf">
+    <start to="biohadoop-node"/>
+    <!-- SINGLE ACTION -->
+    <action name="biohadoop-node">
+        <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
+            <config-file>/biohadoop/conf/biohadoop-sleep.json</config-file>
+        </biohadoop>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action>
+    
+    <!-- TWO SEQUENTIAL ACTIONS -->
+    <!-- <action name="biohadoop-node">
+        <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
+            <config-file>/biohadoop/conf/biohadoop-sleep.json</config-file>
+        </biohadoop>
+        <ok to="biohadoop-node2"/>
+        <error to="fail"/>
+    </action>
+    <action name="biohadoop-node2">
+        <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
+            <config-file>/biohadoop/conf/biohadoop-sleep.json</config-file>
+        </biohadoop>
+        <ok to="end"/>
+        <error to="fail"/>
+    </action> -->
+    
+    <!-- TWO PARALLEL ACTIONS -->
+    <!-- <fork name="biohadoop-node">
+        <path start="biohadoop-node1"/>
+        <path start="biohadoop-node2"/>
+    </fork>
+    <action name="biohadoop-node1">
+        <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
+            <config-file>/biohadoop/conf/biohadoop-sleep.json</config-file>
+        </biohadoop>
+        <ok to="biohadoop-join"/>
+        <error to="fail"/>
+    </action>
+    <action name="biohadoop-node2">
+        <biohadoop xmlns="uri:custom:biohadoop-action:0.1">
+            <config-file>/biohadoop/conf/biohadoop-sleep.json</config-file>
+        </biohadoop>
+        <ok to="biohadoop-join"/>
+        <error to="fail"/>
+    </action>
+    <join name="biohadoop-join" to="end"/> -->
+    
+    <kill name="fail">
+        <message>Biohadoop failed, error message[${wf:errorMessage(wf:lastErrorNode())}]</message>
+    </kill>
+    <end name="end"/>
+</workflow-app>
