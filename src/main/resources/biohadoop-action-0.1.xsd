@@ -4,10 +4,10 @@
 	targetNamespace="uri:custom:biohadoop-action:0.1">
 	<xs:complexType name="BIOHADOOP">
 		<xs:sequence>
+			<xs:element name="name-node" type="xs:string"></xs:element>
 			<xs:element name="config-file" type="xs:string" minOccurs="1"
-				maxOccurs="1" />
+				maxOccurs="unbounded" />
 		</xs:sequence>
 	</xs:complexType>
-
 	<xs:element name="biohadoop" type="biohadoop:BIOHADOOP"></xs:element>
 </xs:schema>

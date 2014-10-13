@@ -45,6 +45,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-mapreduce-client-jobclient</artifactId>
+			<version>${hadoop.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.oozie</groupId>
 			<artifactId>oozie-core</artifactId>
 			<version>4.0.0-cdh5.0.0</version>
